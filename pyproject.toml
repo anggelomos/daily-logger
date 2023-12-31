@@ -8,10 +8,10 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-tickthon = "^0.1.6"
-ruff = "^0.1.9"
+tickthon = "^0.2.0"
 
 [tool.poetry.group.dev.dependencies]
+ruff = "^0.1.9"
 pyright = "^1.1.343"
 
 [build-system]

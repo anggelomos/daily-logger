@@ -17,14 +17,20 @@ def format_logs(logs: List[Task], logs_date: str) -> str:
         A string representing the formatted logs. Each task is represented by a line that includes the
         task's creation time (in 12-hour format) and title. For example "08:40 AM This is just a day log"
     """
-    filtered_logs = [
-        log for log in logs if log.created_date.startswith(logs_date)
-    ]
+    filtered_logs = [log for log in logs if log.created_date.startswith(logs_date)]
     sorted_logs = sorted(filtered_logs, key=lambda x: x.created_date)
-    return "\n".join([
-        f"- {datetime.fromisoformat(log.created_date).strftime('%-I:%M %p').lower()} {log.title}"
-        for log in sorted_logs
-    ])
+
+    formatted_logs = []
+    for log in sorted_logs:
+        formatted_log = f"{datetime.fromisoformat(log.created_date).strftime('%-I:%M %p').lower()} {log.title}"
+
+        if "highlight" in log.tags:
+            formatted_log = "✨ " + formatted_log
+
+        formatted_log = "- " + formatted_log
+        formatted_logs.append(formatted_log)
+
+    return "\n".join(formatted_logs)
 
 
 def main():
@@ -38,8 +44,6 @@ def main():
 
     print("\n### 📟 Day logs")
     print(format_logs(ticktick_client.get_day_logs(), logs_date))
-    print("\n### ✨ Day highlights")
-    print(format_logs(ticktick_client.get_day_highlights(), logs_date))
 
 
 if __name__ == "__main__":
